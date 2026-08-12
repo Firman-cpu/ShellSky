@@ -1,3 +1,6 @@
+//@ pragma ShellId shellsky
+//@ pragma AppId com.firmancpu.shellsky
+
 import QtQuick
 import Quickshell
 
