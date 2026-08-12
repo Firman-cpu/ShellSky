@@ -67,12 +67,7 @@ PanelWindow {
                 height: 30
                 radius: 10
                 color: notificationMouse.containsMouse ? "#ffffff10" : "transparent"
-                Text {
-                    anchors.centerIn: parent
-                    text: "󰂚"
-                    color: "#dce5f8"
-                    font.pixelSize: 15
-                }
+                Text { anchors.centerIn: parent; text: "󰂚"; color: "#dce5f8"; font.pixelSize: 15 }
                 MouseArea {
                     id: notificationMouse
                     anchors.fill: parent
@@ -146,12 +141,7 @@ PanelWindow {
                 anchors.margins: 22
                 spacing: 14
 
-                Text {
-                    text: "Applications"
-                    color: "#f4f7ff"
-                    font.pixelSize: 22
-                    font.weight: Font.DemiBold
-                }
+                Text { text: "Applications"; color: "#f4f7ff"; font.pixelSize: 22; font.weight: Font.DemiBold }
 
                 TextField {
                     id: search
@@ -160,11 +150,7 @@ PanelWindow {
                     color: "#f4f7ff"
                     placeholderTextColor: "#72809a"
                     focus: true
-                    background: Rectangle {
-                        radius: 14
-                        color: "#ffffff08"
-                        border.color: "#ffffff12"
-                    }
+                    background: Rectangle { radius: 14; color: "#ffffff08"; border.color: "#ffffff12" }
                     onTextChanged: appList.currentIndex = 0
                 }
 
@@ -243,7 +229,6 @@ PanelWindow {
 
                 Text { text: "Control Center"; color: "#f4f7ff"; font.pixelSize: 22; font.weight: Font.DemiBold }
                 Text { text: "Live system status is connected; interactive controls are next."; color: "#8290a8"; font.pixelSize: 12; wrapMode: Text.WordWrap; width: parent.width }
-
                 StatusCluster { width: parent.width; height: 44 }
 
                 Repeater {
@@ -255,7 +240,6 @@ PanelWindow {
                         radius: 14
                         color: toggleMouse.containsMouse ? "#8ab4ff18" : "#ffffff07"
                         border.color: "#ffffff0d"
-
                         Text { anchors.left: parent.left; anchors.leftMargin: 16; anchors.verticalCenter: parent.verticalCenter; text: modelData; color: "#dce5f8"; font.pixelSize: 13 }
                         Text { anchors.right: parent.right; anchors.rightMargin: 16; anchors.verticalCenter: parent.verticalCenter; text: "READY"; color: "#8ab4ff"; font.pixelSize: 11; font.weight: Font.DemiBold }
                         MouseArea { id: toggleMouse; anchors.fill: parent; hoverEnabled: true }
@@ -267,7 +251,7 @@ PanelWindow {
 
     NotificationPanel {
         id: notificationPanel
-        parentWindow: bar
+        panelWindow: bar
         open: bar.notificationsOpen
     }
 }
