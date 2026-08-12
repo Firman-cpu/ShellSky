@@ -3,32 +3,35 @@ import Quickshell.Hyprland
 
 Rectangle {
     id: root
-    width: Math.min(parent.width * 0.42, 420)
-    height: 34
-    radius: 12
-    color: "#ffffff08"
-    border.color: "#ffffff0d"
+    width: Math.min(parent.width * 0.34, 360)
+    height: 36
+    radius: 14
+    color: "#72b8ff0d"
+    border.color: "#9acbff22"
+    border.width: 1
 
     Row {
         anchors.centerIn: parent
-        spacing: 5
+        spacing: 4
 
         Repeater {
             model: Hyprland.workspaces
 
             delegate: Rectangle {
                 required property var modelData
-                width: Math.max(28, label.implicitWidth + 18)
-                height: 26
-                radius: 9
-                color: modelData.focused ? "#8ab4ff28" : modelData.active ? "#ffffff0d" : "transparent"
-                border.color: modelData.focused ? "#8ab4ff55" : "transparent"
+                width: Math.max(30, label.implicitWidth + 18)
+                height: 28
+                radius: 10
+                color: modelData.focused ? "#72b8ff38" : modelData.active ? "#72b8ff12" : "transparent"
+                border.color: modelData.focused ? "#9acbff45" : "transparent"
+
+                Behavior on color { ColorAnimation { duration: 140 } }
 
                 Text {
                     id: label
                     anchors.centerIn: parent
                     text: modelData.name || String(modelData.id)
-                    color: modelData.focused ? "#dbe8ff" : modelData.urgent ? "#ff9d9d" : "#8d9ab0"
+                    color: modelData.focused ? "#eef8ff" : modelData.urgent ? "#ffb5c0" : "#9db7d2"
                     font.pixelSize: 11
                     font.weight: modelData.focused ? Font.DemiBold : Font.Normal
                 }
