@@ -3,18 +3,16 @@ import Quickshell
 
 PanelWindow {
     id: bar
-    anchors {
-        top: true
-        left: true
-        right: true
-    }
+    required property var shellScreen
+    screen: shellScreen
+    anchors { top: true; left: true; right: true }
     implicitHeight: 44
     exclusiveZone: 44
     color: "transparent"
 
     Rectangle {
         anchors.fill: parent
-        color: "#101722ee"
+        color: "#111722e8"
         border.color: "#ffffff18"
         border.width: 1
 
@@ -37,13 +35,13 @@ PanelWindow {
             font.pixelSize: 13
             font.weight: Font.DemiBold
             text: Qt.formatDateTime(new Date(), "ddd  HH:mm")
+        }
 
-            Timer {
-                interval: 1000
-                running: true
-                repeat: true
-                onTriggered: clock.text = Qt.formatDateTime(new Date(), "ddd  HH:mm")
-            }
+        Timer {
+            interval: 1000
+            running: true
+            repeat: true
+            onTriggered: clock.text = Qt.formatDateTime(new Date(), "ddd  HH:mm")
         }
     }
 }
