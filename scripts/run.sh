@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+INSTALLED_DIR="${XDG_CONFIG_HOME:-${HOME}/.config}/quickshell/shellsky"
 
 if ! command -v quickshell >/dev/null 2>&1 && ! command -v qs >/dev/null 2>&1; then
     echo "ShellSky: quickshell is not installed."
@@ -15,4 +16,9 @@ if ! command -v hyprctl >/dev/null 2>&1; then
 fi
 
 QS="$(command -v quickshell || command -v qs)"
+
+if [[ "${1:-}" == "--installed" ]]; then
+    exec "$QS" -c shellsky
+fi
+
 exec "$QS" --path "$ROOT_DIR/shellsky.qml"
