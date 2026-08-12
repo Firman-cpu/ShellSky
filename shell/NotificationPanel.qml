@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import Quickshell
-import Quickshell.Services.Notifications
 
 PopupWindow {
     id: root
@@ -16,19 +15,6 @@ PopupWindow {
     visible: open
     grabFocus: true
     color: "transparent"
-
-    NotificationServer {
-        id: server
-        bodySupported: true
-        imageSupported: true
-        keepOnReload: true
-        actionsSupported: true
-        Component.onCompleted: {
-            server.notification.connect(function(notification) {
-                notification.tracked = true
-            })
-        }
-    }
 
     Rectangle {
         anchors.fill: parent
@@ -52,7 +38,7 @@ PopupWindow {
                 }
                 Item { width: parent.width - 150; height: 1 }
                 Text {
-                    text: String(server.trackedNotifications.count || 0)
+                    text: String(NotificationService.trackedNotifications.values.length)
                     color: "#8ab4ff"
                     font.pixelSize: 12
                     anchors.verticalCenter: parent.verticalCenter
@@ -64,7 +50,7 @@ PopupWindow {
                 height: parent.height - 60
                 clip: true
                 spacing: 10
-                model: server.trackedNotifications
+                model: NotificationService.trackedNotifications
 
                 delegate: Rectangle {
                     required property var modelData
