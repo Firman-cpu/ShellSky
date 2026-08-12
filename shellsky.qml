@@ -1,50 +1,30 @@
-//@ pragma ShellId shellsky
-//@ pragma AppId com.firmancpu.shellsky
-
 import QtQuick
 import Quickshell
 
 ShellRoot {
     Variants {
-        model: Quickshell.screens
-        delegate: Component {
-            Item {
-                required property var modelData
+        variants: Quickshell.screens
 
-                PanelWindow {
-                    screen: modelData
-                    anchors { top: true; bottom: true; left: true; right: true }
-                    color: "#080b12"
-                    aboveWindows: false
-                    focusable: false
+        Item {
+            required property var modelData
 
-                    Rectangle {
-                        anchors.fill: parent
-                        color: "#080b12"
+            PanelWindow {
+                screen: modelData
+                anchors { top: true; bottom: true; left: true; right: true }
+                color: "transparent"
+                exclusiveZone: 0
 
-                        Rectangle {
-                            width: parent.width * 0.55
-                            height: parent.height * 0.55
-                            anchors.centerIn: parent
-                            radius: width
-                            color: "#233d66"
-                            opacity: 0.20
-                        }
-
-                        Rectangle {
-                            width: parent.width * 0.30
-                            height: width
-                            x: parent.width * 0.08
-                            y: parent.height * 0.18
-                            radius: width
-                            color: "#526f9f"
-                            opacity: 0.09
-                        }
-                    }
+                Shell {
+                    anchors.fill: parent
                 }
+            }
 
-                TopBar { shellScreen: modelData }
-                BottomDock { shellScreen: modelData }
+            TopBar {
+                shellScreen: modelData
+            }
+
+            BottomDock {
+                shellScreen: modelData
             }
         }
     }
