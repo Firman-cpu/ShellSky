@@ -7,8 +7,8 @@ PanelWindow {
     required property var shellScreen
     screen: shellScreen
     anchors { top: true; left: true; right: true }
-    implicitHeight: 44
-    exclusiveZone: 44
+    implicitHeight: 58
+    exclusiveZone: 58
     color: "transparent"
 
     property bool launcherOpen: false
@@ -17,25 +17,32 @@ PanelWindow {
 
     Rectangle {
         anchors.fill: parent
-        color: "#111722e8"
-        border.color: "#ffffff18"
+        anchors.margins: 10
+        radius: 18
+        color: "#0b2340d9"
+        border.color: "#9acbff28"
         border.width: 1
+
+        Rectangle {
+            anchors.fill: parent
+            radius: parent.radius
+            color: "#ffffff05"
+        }
 
         Rectangle {
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
-            width: 118
-            height: 32
-            radius: 12
-            color: brandMouse.containsMouse ? "#ffffff10" : "transparent"
+            width: 128
+            height: 36
+            radius: 13
+            color: brandMouse.containsMouse ? "#72b8ff16" : "transparent"
 
-            Text {
+            Row {
                 anchors.centerIn: parent
-                text: "☁  ShellSky"
-                color: "#f4f7ff"
-                font.pixelSize: 14
-                font.weight: Font.DemiBold
+                spacing: 9
+                Text { text: "☁"; color: "#9bd0ff"; font.pixelSize: 16 }
+                Text { text: "ShellSky"; color: "#edf7ff"; font.pixelSize: 14; font.weight: Font.DemiBold }
             }
 
             MouseArea {
@@ -52,22 +59,23 @@ PanelWindow {
 
         WorkspaceBar {
             anchors.centerIn: parent
+            height: 36
         }
 
         Row {
             anchors.right: parent.right
-            anchors.rightMargin: 12
+            anchors.rightMargin: 10
             anchors.verticalCenter: parent.verticalCenter
-            spacing: 7
+            spacing: 4
 
             StatusCluster {}
 
             Rectangle {
-                width: 32
-                height: 30
-                radius: 10
-                color: notificationMouse.containsMouse ? "#ffffff10" : "transparent"
-                Text { anchors.centerIn: parent; text: "󰂚"; color: "#dce5f8"; font.pixelSize: 15 }
+                width: 36
+                height: 36
+                radius: 12
+                color: notificationMouse.containsMouse ? "#72b8ff16" : "transparent"
+                Text { anchors.centerIn: parent; text: "󰂚"; color: "#d9ebff"; font.pixelSize: 16 }
                 MouseArea {
                     id: notificationMouse
                     anchors.fill: parent
@@ -81,11 +89,11 @@ PanelWindow {
             }
 
             Rectangle {
-                width: 32
-                height: 30
-                radius: 10
-                color: controlMouse.containsMouse ? "#ffffff10" : "transparent"
-                Text { anchors.centerIn: parent; text: "⚙"; color: "#dce5f8"; font.pixelSize: 15 }
+                width: 36
+                height: 36
+                radius: 12
+                color: controlMouse.containsMouse ? "#72b8ff16" : "transparent"
+                Text { anchors.centerIn: parent; text: "⚙"; color: "#d9ebff"; font.pixelSize: 16 }
                 MouseArea {
                     id: controlMouse
                     anchors.fill: parent
@@ -100,10 +108,10 @@ PanelWindow {
 
             Text {
                 id: clock
-                width: 82
+                width: 92
                 horizontalAlignment: Text.AlignRight
                 anchors.verticalCenter: parent.verticalCenter
-                color: "#f4f7ff"
+                color: "#edf7ff"
                 font.pixelSize: 13
                 font.weight: Font.DemiBold
                 text: Qt.formatDateTime(new Date(), "ddd  HH:mm")
@@ -122,9 +130,9 @@ PanelWindow {
         id: launcher
         anchor.window: bar
         anchor.rect.x: Math.max(18, bar.width / 2 - width / 2)
-        anchor.rect.y: bar.height + 10
-        width: Math.min(bar.width - 36, 760)
-        height: Math.min(bar.screen.height - 110, 520)
+        anchor.rect.y: bar.height + 8
+        width: Math.min(bar.width - 36, 720)
+        height: Math.min(bar.screen.height - 110, 500)
         visible: bar.launcherOpen
         grabFocus: true
         color: "transparent"
@@ -132,8 +140,8 @@ PanelWindow {
         Rectangle {
             anchors.fill: parent
             radius: 24
-            color: "#121a27f5"
-            border.color: "#ffffff1c"
+            color: "#0c2643f2"
+            border.color: "#9acbff30"
             border.width: 1
 
             Column {
@@ -141,16 +149,16 @@ PanelWindow {
                 anchors.margins: 22
                 spacing: 14
 
-                Text { text: "Applications"; color: "#f4f7ff"; font.pixelSize: 22; font.weight: Font.DemiBold }
+                Text { text: "Applications"; color: "#edf7ff"; font.pixelSize: 22; font.weight: Font.DemiBold }
 
                 TextField {
                     id: search
                     width: parent.width
                     placeholderText: "Search applications..."
-                    color: "#f4f7ff"
-                    placeholderTextColor: "#72809a"
+                    color: "#edf7ff"
+                    placeholderTextColor: "#7e9bb8"
                     focus: true
-                    background: Rectangle { radius: 14; color: "#ffffff08"; border.color: "#ffffff12" }
+                    background: Rectangle { radius: 14; color: "#72b8ff0b"; border.color: "#9acbff20" }
                     onTextChanged: appList.currentIndex = 0
                 }
 
@@ -169,7 +177,7 @@ PanelWindow {
                         width: appList.width
                         height: 58
                         radius: 14
-                        color: mouse.containsMouse ? "#8ab4ff18" : "#ffffff07"
+                        color: mouse.containsMouse ? "#72b8ff18" : "#ffffff06"
 
                         Image {
                             anchors.left: parent.left
@@ -185,8 +193,8 @@ PanelWindow {
                             anchors.left: parent.left
                             anchors.leftMargin: 58
                             anchors.verticalCenter: parent.verticalCenter
-                            Text { text: modelData.name; color: "#f4f7ff"; font.pixelSize: 13; font.weight: Font.DemiBold }
-                            Text { text: modelData.genericName || modelData.comment || ""; color: "#8290a8"; font.pixelSize: 11; elide: Text.ElideRight; width: appList.width - 80 }
+                            Text { text: modelData.name; color: "#edf7ff"; font.pixelSize: 13; font.weight: Font.DemiBold }
+                            Text { text: modelData.genericName || modelData.comment || ""; color: "#829fbd"; font.pixelSize: 11; elide: Text.ElideRight; width: appList.width - 80 }
                         }
 
                         MouseArea {
@@ -208,7 +216,7 @@ PanelWindow {
         id: control
         anchor.window: bar
         anchor.rect.x: bar.width - width - 18
-        anchor.rect.y: bar.height + 10
+        anchor.rect.y: bar.height + 8
         width: 360
         height: 500
         visible: bar.controlOpen
@@ -218,8 +226,8 @@ PanelWindow {
         Rectangle {
             anchors.fill: parent
             radius: 24
-            color: "#121a27f5"
-            border.color: "#ffffff1c"
+            color: "#0c2643f2"
+            border.color: "#9acbff30"
             border.width: 1
 
             Column {
@@ -227,8 +235,8 @@ PanelWindow {
                 anchors.margins: 22
                 spacing: 14
 
-                Text { text: "Control Center"; color: "#f4f7ff"; font.pixelSize: 22; font.weight: Font.DemiBold }
-                Text { text: "Live system status is connected; interactive controls are next."; color: "#8290a8"; font.pixelSize: 12; wrapMode: Text.WordWrap; width: parent.width }
+                Text { text: "Control Center"; color: "#edf7ff"; font.pixelSize: 22; font.weight: Font.DemiBold }
+                Text { text: "System controls and quick settings"; color: "#829fbd"; font.pixelSize: 12 }
                 StatusCluster { width: parent.width; height: 44 }
 
                 Repeater {
@@ -238,10 +246,10 @@ PanelWindow {
                         width: parent.width
                         height: 58
                         radius: 14
-                        color: toggleMouse.containsMouse ? "#8ab4ff18" : "#ffffff07"
-                        border.color: "#ffffff0d"
-                        Text { anchors.left: parent.left; anchors.leftMargin: 16; anchors.verticalCenter: parent.verticalCenter; text: modelData; color: "#dce5f8"; font.pixelSize: 13 }
-                        Text { anchors.right: parent.right; anchors.rightMargin: 16; anchors.verticalCenter: parent.verticalCenter; text: "READY"; color: "#8ab4ff"; font.pixelSize: 11; font.weight: Font.DemiBold }
+                        color: toggleMouse.containsMouse ? "#72b8ff18" : "#ffffff06"
+                        border.color: "#9acbff16"
+                        Text { anchors.left: parent.left; anchors.leftMargin: 16; anchors.verticalCenter: parent.verticalCenter; text: modelData; color: "#d9ebff"; font.pixelSize: 13 }
+                        Text { anchors.right: parent.right; anchors.rightMargin: 16; anchors.verticalCenter: parent.verticalCenter; text: "READY"; color: "#72b8ff"; font.pixelSize: 11; font.weight: Font.DemiBold }
                         MouseArea { id: toggleMouse; anchors.fill: parent; hoverEnabled: true }
                     }
                 }
