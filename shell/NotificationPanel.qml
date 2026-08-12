@@ -5,11 +5,11 @@ import Quickshell
 PopupWindow {
     id: root
     property bool open: false
-    property var parentWindow
+    required property var panelWindow
 
-    anchor.window: parentWindow
-    anchor.rect.x: parentWindow ? parentWindow.width - width - 18 : 0
-    anchor.rect.y: parentWindow ? parentWindow.height + 10 : 0
+    anchor.window: panelWindow
+    anchor.rect.x: panelWindow.width - width - 18
+    anchor.rect.y: panelWindow.height + 10
     width: 390
     height: 540
     visible: open
