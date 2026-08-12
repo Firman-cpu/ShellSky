@@ -4,7 +4,7 @@ import "./shell"
 
 ShellRoot {
     Variants {
-        variants: Quickshell.screens
+        model: Quickshell.screens
 
         Item {
             required property var modelData
