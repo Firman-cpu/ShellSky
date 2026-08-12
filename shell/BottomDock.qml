@@ -3,9 +3,9 @@ import Quickshell
 
 PanelWindow {
     id: dock
-    anchors.bottom: true
-    anchors.left: true
-    anchors.right: true
+    required property var shellScreen
+    screen: shellScreen
+    anchors { bottom: true; left: true; right: true }
     implicitHeight: 92
     color: "transparent"
 
@@ -23,7 +23,6 @@ PanelWindow {
         Row {
             anchors.centerIn: parent
             spacing: 9
-
             Repeater {
                 model: ["●", "◆", "■", "▲", "✦", "●"]
                 delegate: Rectangle {
@@ -32,7 +31,6 @@ PanelWindow {
                     radius: 14
                     color: index === 0 ? "#8ab4ff25" : "#ffffff09"
                     border.color: index === 0 ? "#8ab4ff45" : "#ffffff10"
-
                     Text {
                         anchors.centerIn: parent
                         text: modelData
