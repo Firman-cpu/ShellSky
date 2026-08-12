@@ -24,6 +24,11 @@ if ! command -v hyprctl >/dev/null 2>&1; then
   exit 1
 fi
 
+if [[ ! -f "${SCRIPT_DIR}/shellsky.qml" ]]; then
+  echo "ShellSky entrypoint is missing: ${SCRIPT_DIR}/shellsky.qml"
+  exit 1
+fi
+
 MISSING=()
 command -v git >/dev/null 2>&1 || MISSING+=(git)
 command -v quickshell >/dev/null 2>&1 || command -v qs >/dev/null 2>&1 || MISSING+=(quickshell)
@@ -31,6 +36,11 @@ command -v quickshell >/dev/null 2>&1 || command -v qs >/dev/null 2>&1 || MISSIN
 if (( ${#MISSING[@]} )); then
   echo "Installing required packages: ${MISSING[*]}"
   sudo pacman -S --needed --noconfirm "${MISSING[@]}"
+fi
+
+if ! command -v quickshell >/dev/null 2>&1 && ! command -v qs >/dev/null 2>&1; then
+  echo "Quickshell installation failed or executable was not found."
+  exit 1
 fi
 
 if [[ -d "${SHELLSKY_DIR}" ]]; then
@@ -48,7 +58,6 @@ cp -a "${SCRIPT_DIR}/config/." "${SHELLSKY_DIR}/config/"
 cp -a "${SCRIPT_DIR}/scripts/." "${SHELLSKY_DIR}/scripts/"
 
 chmod +x "${SHELLSKY_DIR}/scripts/run.sh"
-
 printf '0.1.0\n' > "${SHELLSKY_DIR}/VERSION"
 
 if [[ -f "${HYPR_CONF}" ]]; then
