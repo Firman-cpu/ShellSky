@@ -2,19 +2,22 @@ import QtQuick
 import Quickshell
 
 QtObject {
-    property var apps: []
+    readonly property var applications: DesktopEntries.applications
 
-    function load() {
-        // Desktop-entry integration will be enabled in the next runtime stage.
-        apps = [
-            { name: "Files", command: "dolphin" },
-            { name: "Terminal", command: "kitty" },
-            { name: "Browser", command: "firefox" },
-            { name: "Settings", command: "pavucontrol" }
-        ]
+    function launch(entry) {
+        if (entry)
+            entry.execute()
     }
 
-    function launch(command) {
-        Quickshell.execDetached(["bash", "-lc", command])
+    function filtered(query) {
+        const needle = String(query || "").trim().toLowerCase()
+        if (!needle)
+            return applications.values
+
+        return applications.values.filter(function(entry) {
+            return entry.name.toLowerCase().indexOf(needle) !== -1
+                || String(entry.genericName || "").toLowerCase().indexOf(needle) !== -1
+                || String(entry.comment || "").toLowerCase().indexOf(needle) !== -1
+        })
     }
 }
