@@ -2,6 +2,7 @@
 set -euo pipefail
 
 SHELLSKY_DIR="${HOME}/.config/shellsky"
+HYPR_CONF="${HOME}/.config/hypr/hyprland.conf"
 BACKUP_DIR="${HOME}/.config/shellsky-backup-$(date +%Y%m%d-%H%M%S)"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
@@ -57,12 +58,26 @@ cat > "${SHELLSKY_DIR}/VERSION" <<'EOF'
 0.1.0
 EOF
 
+# Enable ShellSky automatically in Hyprland, without duplicating the entry.
+if [[ -f "${HYPR_CONF}" ]]; then
+  MARKER="# ShellSky autostart"
+  if ! grep -Fq "${MARKER}" "${HYPR_CONF}"; then
+    cp -a "${HYPR_CONF}" "${HYPR_CONF}.shellsky-backup-$(date +%Y%m%d-%H%M%S)"
+    {
+      printf '\n%s\n' "${MARKER}"
+      printf 'source = %s/config/hyprland/shellsky.conf\n' "${SHELLSKY_DIR}"
+    } >> "${HYPR_CONF}"
+    echo "Hyprland autostart enabled."
+  else
+    echo "Hyprland autostart already configured."
+  fi
+fi
+
 printf '\nShellSky v0.1.0 installed successfully.\n'
 printf 'Configuration: %s\n' "${SHELLSKY_DIR}"
 if [[ -d "${BACKUP_DIR}" ]]; then
   printf 'Backup:        %s\n' "${BACKUP_DIR}"
 fi
-printf '\nTo test without restarting Hyprland:\n'
-printf '  %s\n\n' "${SHELLSKY_DIR}/scripts/run.sh"
-printf 'To autostart ShellSky, add this line to Hyprland:\n'
-printf '  source = %s/config/hyprland/shellsky.conf\n\n' "${SHELLSKY_DIR}"
+printf '\nRun now without restarting Hyprland:\n'
+printf '  %s\n' "${SHELLSKY_DIR}/scripts/run.sh"
+printf '\nRestart Hyprland to load the automatic startup configuration.\n\n'
