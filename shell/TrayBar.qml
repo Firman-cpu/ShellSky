@@ -4,6 +4,7 @@ import Quickshell.Services.SystemTray
 
 Row {
     id: root
+    property var parentWindow
     spacing: 4
     height: 30
 
@@ -31,8 +32,8 @@ Row {
                 hoverEnabled: true
                 acceptedButtons: Qt.LeftButton | Qt.RightButton
                 onClicked: function(mouse) {
-                    if (mouse.button === Qt.RightButton && modelData.hasMenu)
-                        modelData.display(root, mouse.x, mouse.y)
+                    if (mouse.button === Qt.RightButton && modelData.hasMenu && root.parentWindow)
+                        modelData.display(root.parentWindow, mouse.x, mouse.y)
                     else
                         modelData.activate()
                 }
