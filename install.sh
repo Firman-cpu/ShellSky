@@ -18,12 +18,17 @@ if [[ ! -f /etc/arch-release ]]; then
 fi
 
 if ! command -v hyprctl >/dev/null 2>&1; then
-  echo "Warning: Hyprland was not detected. ShellSky is designed for Hyprland."
+  echo "ShellSky requires Hyprland. Please install/configure Hyprland first."
+  exit 1
 fi
 
-if ! command -v git >/dev/null 2>&1; then
-  echo "Installing git..."
-  sudo pacman -S --needed --noconfirm git
+MISSING=()
+command -v git >/dev/null 2>&1 || MISSING+=(git)
+command -v quickshell >/dev/null 2>&1 || command -v qs >/dev/null 2>&1 || MISSING+=(quickshell)
+
+if (( ${#MISSING[@]} )); then
+  echo "Installing required packages: ${MISSING[*]}"
+  sudo pacman -S --needed --noconfirm "${MISSING[@]}"
 fi
 
 if [[ -d "${SHELLSKY_DIR}" ]]; then
@@ -40,29 +45,24 @@ mkdir -p \
   "${SHELLSKY_DIR}/assets" \
   "${SHELLSKY_DIR}/scripts"
 
-if [[ -f "${SCRIPT_DIR}/shellsky.conf" ]]; then
-  cp "${SCRIPT_DIR}/shellsky.conf" "${SHELLSKY_DIR}/shellsky.conf"
-fi
+cp "${SCRIPT_DIR}/shellsky.qml" "${SHELLSKY_DIR}/shellsky.qml"
+cp "${SCRIPT_DIR}/shellsky.conf" "${SHELLSKY_DIR}/shellsky.conf"
+cp -a "${SCRIPT_DIR}/shell/." "${SHELLSKY_DIR}/shell/"
+cp -a "${SCRIPT_DIR}/config/." "${SHELLSKY_DIR}/config/"
+cp -a "${SCRIPT_DIR}/scripts/." "${SHELLSKY_DIR}/scripts/"
 
-if [[ -d "${SCRIPT_DIR}/shell" ]]; then
-  cp -a "${SCRIPT_DIR}/shell/." "${SHELLSKY_DIR}/shell/"
-fi
-
-if [[ -d "${SCRIPT_DIR}/config" ]]; then
-  cp -a "${SCRIPT_DIR}/config/." "${SHELLSKY_DIR}/config/"
-fi
-
-if [[ -d "${SCRIPT_DIR}/themes" ]]; then
-  cp -a "${SCRIPT_DIR}/themes/." "${SHELLSKY_DIR}/themes/"
-fi
+chmod +x "${SHELLSKY_DIR}/scripts/run.sh"
 
 cat > "${SHELLSKY_DIR}/VERSION" <<'EOF'
 0.1.0
 EOF
 
-printf '\nShellSky foundation installed.\n'
+printf '\nShellSky v0.1.0 installed successfully.\n'
 printf 'Configuration: %s\n' "${SHELLSKY_DIR}"
 if [[ -d "${BACKUP_DIR}" ]]; then
   printf 'Backup:        %s\n' "${BACKUP_DIR}"
 fi
-printf '\nNext stage: ShellSky runtime and desktop shell.\n\n'
+printf '\nTo test without restarting Hyprland:\n'
+printf '  %s\n\n' "${SHELLSKY_DIR}/scripts/run.sh"
+printf 'To autostart ShellSky, add this line to Hyprland:\n'
+printf '  source = %s/config/hyprland/shellsky.conf\n\n' "${SHELLSKY_DIR}"
