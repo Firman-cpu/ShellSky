@@ -13,6 +13,7 @@ PanelWindow {
 
     property bool launcherOpen: false
     property bool controlOpen: false
+    property bool notificationsOpen: false
 
     Rectangle {
         anchors.fill: parent
@@ -21,7 +22,6 @@ PanelWindow {
         border.width: 1
 
         Rectangle {
-            id: brandButton
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
@@ -45,18 +45,48 @@ PanelWindow {
                 onClicked: {
                     bar.launcherOpen = !bar.launcherOpen
                     bar.controlOpen = false
+                    bar.notificationsOpen = false
                 }
             }
+        }
+
+        WorkspaceBar {
+            anchors.centerIn: parent
         }
 
         Row {
             anchors.right: parent.right
             anchors.rightMargin: 12
             anchors.verticalCenter: parent.verticalCenter
-            spacing: 8
+            spacing: 7
+
+            StatusCluster {}
 
             Rectangle {
-                width: 34
+                width: 32
+                height: 30
+                radius: 10
+                color: notificationMouse.containsMouse ? "#ffffff10" : "transparent"
+                Text {
+                    anchors.centerIn: parent
+                    text: "󰂚"
+                    color: "#dce5f8"
+                    font.pixelSize: 15
+                }
+                MouseArea {
+                    id: notificationMouse
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: {
+                        bar.notificationsOpen = !bar.notificationsOpen
+                        bar.launcherOpen = false
+                        bar.controlOpen = false
+                    }
+                }
+            }
+
+            Rectangle {
+                width: 32
                 height: 30
                 radius: 10
                 color: controlMouse.containsMouse ? "#ffffff10" : "transparent"
@@ -68,6 +98,7 @@ PanelWindow {
                     onClicked: {
                         bar.controlOpen = !bar.controlOpen
                         bar.launcherOpen = false
+                        bar.notificationsOpen = false
                     }
                 }
             }
@@ -211,7 +242,9 @@ PanelWindow {
                 spacing: 14
 
                 Text { text: "Control Center"; color: "#f4f7ff"; font.pixelSize: 22; font.weight: Font.DemiBold }
-                Text { text: "Quick controls"; color: "#8290a8"; font.pixelSize: 12 }
+                Text { text: "Live system status is connected; interactive controls are next."; color: "#8290a8"; font.pixelSize: 12; wrapMode: Text.WordWrap; width: parent.width }
+
+                StatusCluster { width: parent.width; height: 44 }
 
                 Repeater {
                     model: ["Wi-Fi", "Bluetooth", "Night Light", "Do Not Disturb"]
@@ -224,12 +257,17 @@ PanelWindow {
                         border.color: "#ffffff0d"
 
                         Text { anchors.left: parent.left; anchors.leftMargin: 16; anchors.verticalCenter: parent.verticalCenter; text: modelData; color: "#dce5f8"; font.pixelSize: 13 }
-                        Text { anchors.right: parent.right; anchors.rightMargin: 16; anchors.verticalCenter: parent.verticalCenter; text: index < 2 ? "ON" : "OFF"; color: index < 2 ? "#8ab4ff" : "#72809a"; font.pixelSize: 11; font.weight: Font.DemiBold }
-
+                        Text { anchors.right: parent.right; anchors.rightMargin: 16; anchors.verticalCenter: parent.verticalCenter; text: "READY"; color: "#8ab4ff"; font.pixelSize: 11; font.weight: Font.DemiBold }
                         MouseArea { id: toggleMouse; anchors.fill: parent; hoverEnabled: true }
                     }
                 }
             }
         }
+    }
+
+    NotificationPanel {
+        id: notificationPanel
+        parentWindow: bar
+        open: bar.notificationsOpen
     }
 }
